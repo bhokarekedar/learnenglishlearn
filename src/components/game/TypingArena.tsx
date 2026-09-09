@@ -18,21 +18,18 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
     else setStatus('idle');
   }, [isCompleted, cursorIndex, hasError, setStatus]);
 
-  // Focus the hidden input whenever the sentence changes (new clip)
+  // On desktop: auto-focus when sentence changes
+  // On mobile: this won't work due to browser security, user must tap the arena
   useEffect(() => {
-    hiddenInputRef.current?.focus();
+    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (!isMobile) {
+      hiddenInputRef.current?.focus();
+    }
   }, [targetSentence]);
 
-  const focusInput = () => hiddenInputRef.current?.focus();
-
   /**
-   * onKeyDown — handles ALL key events for both desktop and mobile.
-   * 
-   * Strategy:
-   *  - Special keys (Backspace, Tab, Escape): process immediately, preventDefault.
-   *  - Printable chars: IGNORE here — let onChange handle them to avoid double-firing.
-   *    (On desktop, a keydown for 'h' also produces an onChange event.)
-   *  - Navigation keys (Arrow, Shift+Arrow): let page.tsx global handler deal with them.
+   * onKeyDown — special keys: Backspace, Tab, Escape.
+   * Regular printable chars are handled by onChange below.
    */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace') {
@@ -45,21 +42,16 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
       e.preventDefault();
       processKey('Escape');
     }
-    // Printable chars: do nothing here — onChange will handle them
   };
 
   /**
-   * onChange — fires for every printable character typed, on BOTH desktop and mobile.
-   * We take the last character typed (input value accumulated since last clear),
-   * process it, then reset the input value to "" so it stays ready for next char.
+   * onChange — fires for every printable character on both desktop and mobile.
+   * We process the last char and immediately reset value to "" so it's always ready.
    */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     if (!val) return;
-    // Always take the last character — handles mobile autocomplete adding multiple chars
-    const char = val[val.length - 1];
-    processKey(char);
-    // Reset so next keystroke starts fresh
+    processKey(val[val.length - 1]);
     e.target.value = '';
   };
 
@@ -67,16 +59,22 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative w-full max-w-4xl mx-auto p-8 md:p-12 mt-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 backdrop-blur-sm shadow-2xl cursor-text select-none"
-      onClick={focusInput}
+      // `relative` so the absolute input overlay is contained within this card
+      className="relative w-full max-w-4xl mx-auto p-8 md:p-12 mt-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 backdrop-blur-sm shadow-2xl select-none"
     >
       {/*
-        Hidden input — the ONLY keyboard hook.
-        - opacity-0 + w-0 h-0: invisible but still focusable and receives events.
-        - autoCapitalize / autoCorrect / autoComplete / spellCheck all off to prevent
-          mobile OS from mangling the input before we process it.
-        - inputMode="text" opens the standard alphanumeric keyboard on iOS/Android.
-        - position: fixed keeps it on-screen even on scroll so focus doesn't jump page.
+        ── Mobile keyboard trick ──
+        This input is INVISIBLE but covers the ENTIRE card.
+        When the user taps anywhere on the card, they're tapping this input,
+        which is a real focusable element → mobile OS opens keyboard natively.
+
+        Critical properties:
+        - position: absolute + inset-0: fills the full card
+        - opacity-0: invisible (NOT display:none or visibility:hidden — those prevent focus)
+        - NO pointer-events-none: must be tappable
+        - autoCapitalize/autoCorrect/autoComplete/spellCheck all off
+        - inputMode="text": opens standard keyboard (not numeric) on iOS/Android
+        - cursor-text on the wrapper so the tap target feels natural
       */}
       <input
         ref={hiddenInputRef}
@@ -88,17 +86,12 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
         spellCheck={false}
         onKeyDown={handleKeyDown}
         onChange={handleChange}
-        onBlur={() => {
-          // Re-focus after brief delay to handle iOS keyboard dismiss on blur
-          setTimeout(() => hiddenInputRef.current?.focus(), 100);
-        }}
-        className="fixed opacity-0 w-0 h-0 left-0 top-0 pointer-events-none"
+        className="absolute inset-0 w-full h-full opacity-0 cursor-text z-10"
         aria-label="Type the sentence shown"
-        tabIndex={0}
       />
 
-      {/* Character display */}
-      <div className="flex flex-wrap gap-[1px]">
+      {/* Character display — sits below the input overlay in z-order */}
+      <div className="relative z-0 flex flex-wrap gap-[1px]">
         {targetSentence.split('').map((char, index) => (
           <CharacterTile
             key={index}
@@ -110,7 +103,7 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
       </div>
 
       {/* Status bar */}
-      <div className="mt-8 flex justify-between items-center text-sm font-mono text-gray-500">
+      <div className="relative z-0 mt-8 flex justify-between items-center text-sm font-mono text-gray-500">
         <div>
           Mistakes:{' '}
           <span className={hasError ? 'text-rose-400' : 'text-gray-500'}>
@@ -133,9 +126,9 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
         )}
       </div>
 
-      {/* Mobile tap hint — only shown on small screens */}
-      <p className="mt-3 text-center text-xs text-gray-600 md:hidden">
-        Tap here to open keyboard
+      {/* Mobile hint — only on touch devices */}
+      <p className="relative z-0 mt-3 text-center text-xs text-gray-600 md:hidden">
+        Tap anywhere here to type
       </p>
     </motion.div>
   );
