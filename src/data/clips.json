@@ -1,0 +1,576 @@
+[
+  {
+    "id": "clip-0",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 0,
+    "endTime": 19.357999999999997,
+    "targetSentence": "Hello, Mr.Snail!"
+  },
+  {
+    "id": "clip-1",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 19.458,
+    "endTime": 22.232999999999997,
+    "targetSentence": "Aw, you cute little cornu aspersum."
+  },
+  {
+    "id": "clip-2",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 22.333,
+    "endTime": 28.275,
+    "targetSentence": "Latin name bonus-points!"
+  },
+  {
+    "id": "clip-3",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 28.375,
+    "endTime": 30.732999999999997,
+    "targetSentence": "Can’t believe we got stuck with the tree hugger."
+  },
+  {
+    "id": "clip-4",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 30.833,
+    "endTime": 34.567,
+    "targetSentence": "If I have to hear the latin name for one more animal, I swear I'm gonna kill her."
+  },
+  {
+    "id": "clip-5",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 34.667,
+    "endTime": 39.442,
+    "targetSentence": "Relax, Sugar Buns. While she does all the work we’ll have all the fun."
+  },
+  {
+    "id": "clip-6",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 39.542,
+    "endTime": 42.483,
+    "targetSentence": "Yeah! And get wasted out of our minds!"
+  },
+  {
+    "id": "clip-7",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 42.583,
+    "endTime": 44.15,
+    "targetSentence": "Way ahead of you, man."
+  },
+  {
+    "id": "clip-8",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 44.25,
+    "endTime": 48.525,
+    "targetSentence": "C’mon, team! We mustn’t dilly-dally when there’s so much nature to see!"
+  },
+  {
+    "id": "clip-9",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 48.625,
+    "endTime": 53.567,
+    "targetSentence": "I was thinking we should call our class project, “Fungis in a Forest!”"
+  },
+  {
+    "id": "clip-10",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 53.667,
+    "endTime": 56.067,
+    "targetSentence": "Get it? Because we’re a group of fun guys."
+  },
+  {
+    "id": "clip-11",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 56.167,
+    "endTime": 57.567,
+    "targetSentence": "And also fungis which-"
+  },
+  {
+    "id": "clip-12",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 57.667,
+    "endTime": 62.65,
+    "targetSentence": "Shush! That’s a yellow wagtail. And she’s in distress!"
+  },
+  {
+    "id": "clip-13",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 62.75,
+    "endTime": 67.69200000000001,
+    "targetSentence": "There, there, my little motacilla flava."
+  },
+  {
+    "id": "clip-14",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 67.792,
+    "endTime": 70.275,
+    "targetSentence": "Oh! Look at her go!"
+  },
+  {
+    "id": "clip-15",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 70.375,
+    "endTime": 71.4,
+    "targetSentence": "Wow!"
+  },
+  {
+    "id": "clip-16",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 71.5,
+    "endTime": 74.31700000000001,
+    "targetSentence": "Out of the way, dorkwad! We're camping here."
+  },
+  {
+    "id": "clip-17",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 74.417,
+    "endTime": 78.31700000000001,
+    "targetSentence": "Finally! Time to get that BBQ burning."
+  },
+  {
+    "id": "clip-18",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 78.417,
+    "endTime": 87.233,
+    "targetSentence": "Oh. Oh, dear."
+  },
+  {
+    "id": "clip-19",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 87.333,
+    "endTime": 90.733,
+    "targetSentence": "Gross!"
+  },
+  {
+    "id": "clip-20",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 90.833,
+    "endTime": 95.358,
+    "targetSentence": "Oh. Easy, guys. We’re supposed to be studying nature, not wrecking it."
+  },
+  {
+    "id": "clip-21",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 95.458,
+    "endTime": 100.608,
+    "targetSentence": "Piss break!"
+  },
+  {
+    "id": "clip-22",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 100.708,
+    "endTime": 104.56700000000001,
+    "targetSentence": "Oy, fungus freak! Make yourself useful and fix the tent."
+  },
+  {
+    "id": "clip-23",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 104.667,
+    "endTime": 109.775,
+    "targetSentence": "Oh, a bit of friendly campsite ribbing. Fun."
+  },
+  {
+    "id": "clip-24",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 109.875,
+    "endTime": 112.483,
+    "targetSentence": "She wouldn't survive 5 minutes alone in these woods."
+  },
+  {
+    "id": "clip-25",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 112.583,
+    "endTime": 116.69200000000001,
+    "targetSentence": "Yeah. She's a real weenie that one, innit?"
+  },
+  {
+    "id": "clip-26",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 116.792,
+    "endTime": 118.9,
+    "targetSentence": "Oy, Phil! How those sausages coming?"
+  },
+  {
+    "id": "clip-27",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 119,
+    "endTime": 156.233,
+    "targetSentence": "Almost ready! Just need a bit more salt..."
+  },
+  {
+    "id": "clip-28",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 156.333,
+    "endTime": 159.108,
+    "targetSentence": "It's incredible. It's a new species."
+  },
+  {
+    "id": "clip-29",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 159.208,
+    "endTime": 161.775,
+    "targetSentence": "What the bloody hell are those things?"
+  },
+  {
+    "id": "clip-30",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 161.875,
+    "endTime": 177.275,
+    "targetSentence": "It's like a gnome shagged a mushroom."
+  },
+  {
+    "id": "clip-31",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 177.375,
+    "endTime": 179.483,
+    "targetSentence": "They’re absolutely adorable."
+  },
+  {
+    "id": "clip-32",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 179.583,
+    "endTime": 181.9,
+    "targetSentence": "Yeah, absolutely bloody adorable."
+  },
+  {
+    "id": "clip-33",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 182,
+    "endTime": 185.525,
+    "targetSentence": "And I bet we’ll make a fortune if we catch one of those things."
+  },
+  {
+    "id": "clip-34",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 185.625,
+    "endTime": 186.858,
+    "targetSentence": "We'd be famous!"
+  },
+  {
+    "id": "clip-35",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 186.958,
+    "endTime": 188.192,
+    "targetSentence": "Get on MTV."
+  },
+  {
+    "id": "clip-36",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 188.292,
+    "endTime": 189.775,
+    "targetSentence": "I wonder what they taste like."
+  },
+  {
+    "id": "clip-37",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 189.875,
+    "endTime": 192.4,
+    "targetSentence": "We really shouldn't disrupt their habitat."
+  },
+  {
+    "id": "clip-38",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 192.5,
+    "endTime": 195.817,
+    "targetSentence": "Right. Sure, sure."
+  },
+  {
+    "id": "clip-39",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 195.917,
+    "endTime": 197.4,
+    "targetSentence": "Greetings."
+  },
+  {
+    "id": "clip-40",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 197.5,
+    "endTime": 198.9,
+    "targetSentence": "Welcome, friends."
+  },
+  {
+    "id": "clip-41",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 199,
+    "endTime": 206.15,
+    "targetSentence": "I'll be right down."
+  },
+  {
+    "id": "clip-42",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 206.25,
+    "endTime": 208.65,
+    "targetSentence": "Could I interest you in some peppermint tea?"
+  },
+  {
+    "id": "clip-43",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 208.75,
+    "endTime": 210.567,
+    "targetSentence": "What are you guys?"
+  },
+  {
+    "id": "clip-44",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 210.667,
+    "endTime": 214.317,
+    "targetSentence": "We are Sprites. We sprite balance to the forest."
+  },
+  {
+    "id": "clip-45",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 214.417,
+    "endTime": 220.9,
+    "targetSentence": "We take care of the animals, plants, birds, moss..."
+  },
+  {
+    "id": "clip-46",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 221,
+    "endTime": 226.483,
+    "targetSentence": "Guys? Guys, I..."
+  },
+  {
+    "id": "clip-47",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 226.583,
+    "endTime": 231.442,
+    "targetSentence": "Hey, uh, little mushroom geezer, you cool with us camping here for the night?"
+  },
+  {
+    "id": "clip-48",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 231.542,
+    "endTime": 237.608,
+    "targetSentence": "Absolutely. A friend of the forest is a friend of the sprites."
+  },
+  {
+    "id": "clip-49",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 237.708,
+    "endTime": 241.275,
+    "targetSentence": "Maybe it was just ketchup... or something... like..."
+  },
+  {
+    "id": "clip-50",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 241.375,
+    "endTime": 255.4,
+    "targetSentence": "Red paint? Yeah, maybe they were just painting their little hats or... something..."
+  },
+  {
+    "id": "clip-51",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 255.5,
+    "endTime": 259.98299999999995,
+    "targetSentence": "Guys?"
+  },
+  {
+    "id": "clip-52",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 260.08299999999997,
+    "endTime": 262.317,
+    "targetSentence": "Guys?"
+  },
+  {
+    "id": "clip-53",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 262.41700000000003,
+    "endTime": 264.98299999999995,
+    "targetSentence": "Guys, this isn't funny."
+  },
+  {
+    "id": "clip-54",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 265.08299999999997,
+    "endTime": 287.10799999999995,
+    "targetSentence": "Guys?"
+  },
+  {
+    "id": "clip-55",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 287.20799999999997,
+    "endTime": 290.067,
+    "targetSentence": "We were just gonna catch one! But they’re psycho!"
+  },
+  {
+    "id": "clip-56",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 290.16700000000003,
+    "endTime": 295.567,
+    "targetSentence": "You gotta get me outta these! Hurry! They’re gonna kill us!"
+  },
+  {
+    "id": "clip-57",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 295.66700000000003,
+    "endTime": 296.48299999999995,
+    "targetSentence": "Hurry!"
+  },
+  {
+    "id": "clip-58",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 296.58299999999997,
+    "endTime": 299.35799999999995,
+    "targetSentence": "Right foot, left foot, leaf and stone."
+  },
+  {
+    "id": "clip-59",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 299.45799999999997,
+    "endTime": 303.483,
+    "targetSentence": "You picked the wrong camping spot, bitches."
+  },
+  {
+    "id": "clip-60",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 303.583,
+    "endTime": 305.733,
+    "targetSentence": "Sprite them!"
+  },
+  {
+    "id": "clip-61",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 305.833,
+    "endTime": 318.27,
+    "targetSentence": "Run!!!"
+  },
+  {
+    "id": "clip-62",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 318.37,
+    "endTime": 321.467,
+    "targetSentence": "Take that, you little freaks!"
+  },
+  {
+    "id": "clip-63",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 321.567,
+    "endTime": 330.15,
+    "targetSentence": "Sprite this!"
+  },
+  {
+    "id": "clip-64",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 330.25,
+    "endTime": 357.525,
+    "targetSentence": "Aaaah! My eyes!"
+  },
+  {
+    "id": "clip-65",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 357.625,
+    "endTime": 367.025,
+    "targetSentence": "Sugar Buns?! Help me!"
+  },
+  {
+    "id": "clip-66",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 367.125,
+    "endTime": 371.19199999999995,
+    "targetSentence": "Sweet cakes!"
+  },
+  {
+    "id": "clip-67",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 371.292,
+    "endTime": 374.06699999999995,
+    "targetSentence": "Love muffin..."
+  },
+  {
+    "id": "clip-68",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 374.167,
+    "endTime": 399.942,
+    "targetSentence": "Huh?"
+  },
+  {
+    "id": "clip-69",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 400.04200000000003,
+    "endTime": 414.98299999999995,
+    "targetSentence": "No, no, no! I can’t swim!"
+  },
+  {
+    "id": "clip-70",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 415.08299999999997,
+    "endTime": 418.192,
+    "targetSentence": "Yes!"
+  },
+  {
+    "id": "clip-71",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 418.29200000000003,
+    "endTime": 426.25899999999996,
+    "targetSentence": "No!"
+  },
+  {
+    "id": "clip-72",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 426.359,
+    "endTime": 428.041,
+    "targetSentence": "Son of a Spriteberry!"
+  },
+  {
+    "id": "clip-73",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 428.141,
+    "endTime": 432.733,
+    "targetSentence": "It burns! It burns!"
+  },
+  {
+    "id": "clip-74",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 432.833,
+    "endTime": 437.10799999999995,
+    "targetSentence": "I don’t want to hurt you! Just keep your distance!"
+  },
+  {
+    "id": "clip-75",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 437.20799999999997,
+    "endTime": 476.73299999999995,
+    "targetSentence": "All right, then. Eat salt, you little green bastards!"
+  },
+  {
+    "id": "clip-76",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 476.83299999999997,
+    "endTime": 478.442,
+    "targetSentence": "Nuh-uh-uh."
+  },
+  {
+    "id": "clip-77",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 478.54200000000003,
+    "endTime": 483.233,
+    "targetSentence": "Those punks treated the world as their own personal rubbish bin."
+  },
+  {
+    "id": "clip-78",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 483.333,
+    "endTime": 485.525,
+    "targetSentence": "And you set them free!"
+  },
+  {
+    "id": "clip-79",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 485.625,
+    "endTime": 525.775,
+    "targetSentence": "Now you'll join them!"
+  },
+  {
+    "id": "clip-80",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 525.875,
+    "endTime": 529.9,
+    "targetSentence": "I’ll give you that one, Brother Bird!"
+  },
+  {
+    "id": "clip-81",
+    "videoPath": "/videos/sample_video.mp4",
+    "startTime": 530,
+    "endTime": 533,
+    "targetSentence": "Alright sprites, let’s burn the bodies and have some peppermint tea."
+  }
+]
