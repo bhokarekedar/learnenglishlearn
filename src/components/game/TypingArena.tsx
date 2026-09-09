@@ -1,5 +1,3 @@
-'use client';
-
 import { useTypingEngine } from "@/src/hooks/useTypingEngine";
 import { CharacterTile } from "./CharacterTile";
 import { useEffect, useRef } from "react";
@@ -18,19 +16,12 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
     else setStatus('idle');
   }, [isCompleted, cursorIndex, hasError, setStatus]);
 
-  // On desktop: auto-focus when sentence changes
-  // On mobile: this won't work due to browser security, user must tap the arena
+  // Focus helper – called on mount and on any user tap/touch
+  const focusInput = () => hiddenInputRef.current?.focus();
   useEffect(() => {
-    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    if (!isMobile) {
-      hiddenInputRef.current?.focus();
-    }
+    focusInput();
   }, [targetSentence]);
 
-  /**
-   * onKeyDown — special keys: Backspace, Tab, Escape.
-   * Regular printable chars are handled by onChange below.
-   */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace') {
       e.preventDefault();
@@ -44,10 +35,6 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
     }
   };
 
-  /**
-   * onChange — fires for every printable character on both desktop and mobile.
-   * We process the last char and immediately reset value to "" so it's always ready.
-   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     if (!val) return;
@@ -59,23 +46,11 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      // `relative` so the absolute input overlay is contained within this card
       className="relative w-full max-w-4xl mx-auto p-8 md:p-12 mt-4 rounded-2xl bg-gray-900/50 border border-gray-800/50 backdrop-blur-sm shadow-2xl select-none"
+      onClick={focusInput}
+      onTouchStart={focusInput} // guarantee mobile gesture triggers focus
     >
-      {/*
-        ── Mobile keyboard trick ──
-        This input is INVISIBLE but covers the ENTIRE card.
-        When the user taps anywhere on the card, they're tapping this input,
-        which is a real focusable element → mobile OS opens keyboard natively.
-
-        Critical properties:
-        - position: absolute + inset-0: fills the full card
-        - opacity-0: invisible (NOT display:none or visibility:hidden — those prevent focus)
-        - NO pointer-events-none: must be tappable
-        - autoCapitalize/autoCorrect/autoComplete/spellCheck all off
-        - inputMode="text": opens standard keyboard (not numeric) on iOS/Android
-        - cursor-text on the wrapper so the tap target feels natural
-      */}
+      {/* Invisible but fully interactive input covering the whole arena */}
       <input
         ref={hiddenInputRef}
         type="text"
@@ -84,13 +59,15 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
         autoCorrect="off"
         autoComplete="off"
         spellCheck={false}
+        // autoFocus is unreliable on mobile without user gesture – we rely on click/touch
         onKeyDown={handleKeyDown}
         onChange={handleChange}
         className="absolute inset-0 w-full h-full opacity-0 cursor-text z-10"
         aria-label="Type the sentence shown"
+        tabIndex={0}
       />
 
-      {/* Character display — sits below the input overlay in z-order */}
+      {/* Character display */}
       <div className="relative z-0 flex flex-wrap gap-[1px]">
         {targetSentence.split('').map((char, index) => (
           <CharacterTile
@@ -106,30 +83,19 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
       <div className="relative z-0 mt-8 flex justify-between items-center text-sm font-mono text-gray-500">
         <div>
           Mistakes:{' '}
-          <span className={hasError ? 'text-rose-400' : 'text-gray-500'}>
-            {hasError ? 1 : 0}
-          </span>
+          <span className={hasError ? 'text-rose-400' : 'text-gray-500'}>{hasError ? 1 : 0}</span>
           {hasError && (
-            <span className="ml-3 text-rose-400 animate-pulse text-xs">
-              ← type correct key or Backspace
-            </span>
+            <span className="ml-3 text-rose-400 animate-pulse text-xs">← type correct key or Backspace</span>
           )}
         </div>
         {isCompleted && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-emerald-400 font-bold"
-          >
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-emerald-400 font-bold">
             ✓ Done!
           </motion.div>
         )}
       </div>
 
-      {/* Mobile hint — only on touch devices */}
-      <p className="relative z-0 mt-3 text-center text-xs text-gray-600 md:hidden">
-        Tap anywhere here to type
-      </p>
+      <p className="relative z-0 mt-3 text-center text-xs text-gray-600 md:hidden">Tap anywhere here to type</p>
     </motion.div>
   );
 }
