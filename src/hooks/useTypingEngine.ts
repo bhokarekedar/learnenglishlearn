@@ -4,110 +4,162 @@ import { useGameStore } from '@/src/store/useGameStore';
 
 export type CharacterState = 'pending' | 'correct' | 'error';
 
+/**
+ * Production-ready typing engine.
+ *
+ * Error model:
+ *  - `cursorIndex` = how many chars have been correctly typed so far.
+ *  - `hasError` = the user typed a wrong key at `cursorIndex`. The slot is highlighted
+ *    red. The user MUST either Backspace (to stay on this slot) or type the
+ *    correct key (which clears the error and advances). Either way, `cursorIndex`
+ *    never advances on a wrong key — no phantom chars are appended.
+ *  - `mistakesThisSentence` = lifetime wrong-key count for the current sentence.
+ *    Resets to 0 when the sentence changes. Used for the hint system.
+ */
 export function useTypingEngine(targetSentence: string) {
-  const [typedChars, setTypedChars] = useState<string>('');
-  const [currentErrors, setCurrentErrors] = useState(0); // Current red chars on screen
-  const [totalMistakes, setTotalMistakes] = useState(0); // Lifetime mistakes
+  // Number of correctly confirmed characters
+  const [cursorIndex, setCursorIndex] = useState(0);
+  // Whether the current slot has an error (user pressed wrong key)
+  const [hasError, setHasError] = useState(false);
+  // Lifetime wrong-key presses this sentence (for hint/streak logic)
+  const [mistakesThisSentence, setMistakesThisSentence] = useState(0);
+
   const { playKeypress, playError } = useSoundEffects();
   const triggerReplay = useGameStore((state) => state.triggerReplay);
 
+  // Reset all state when sentence changes
   useEffect(() => {
-    setTypedChars('');
-    setCurrentErrors(0);
-    setTotalMistakes(0);
+    setCursorIndex(0);
+    setHasError(false);
+    setMistakesThisSentence(0);
   }, [targetSentence]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    // Ignore modifier keys
+    // Ignore modifier-only keys
     if (e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta') return;
+
+    // Tab → replay clip
     if (e.key === 'Tab') {
       e.preventDefault();
       triggerReplay();
       return;
     }
 
-    if (e.key === 'Backspace') {
-      if (typedChars.length > 0) {
-        setTypedChars((prev) => prev.slice(0, -1));
-        playKeypress();
-        if (currentErrors > 0) {
-          setCurrentErrors((prev) => prev - 1);
-        }
-      }
-      return;
-    }
-
+    // Escape → full reset
     if (e.key === 'Escape') {
-      setTypedChars('');
-      setCurrentErrors(0);
-      setTotalMistakes(0);
+      setCursorIndex(0);
+      setHasError(false);
+      setMistakesThisSentence(0);
       return;
     }
 
-    if (e.key.length === 1) { // Normal character
-      // If we have errors on screen, block them from typing further until they backspace
-      if (currentErrors > 0) {
-        playError();
+    // Backspace — go back one confirmed character, clear error
+    if (e.key === 'Backspace') {
+      if (hasError) {
+        // Clear the error flag, stay on the same slot, undo the mistake count
+        setHasError(false);
+        setMistakesThisSentence((prev) => Math.max(0, prev - 1));
+      } else if (cursorIndex > 0) {
+        setCursorIndex((prev) => prev - 1);
+      }
+      playKeypress();
+      return;
+    }
+
+    // Ignore anything beyond the sentence length
+    if (cursorIndex >= targetSentence.length) return;
+
+    if (e.key.length === 1) {
+      // Determine the effective expected character, skipping punctuation auto-fill
+      let targetIndex = cursorIndex;
+      let autoFillCount = 0;
+      const PUNCTUATION = /^[.,!?'"–—\-\u2018\u2019\u201C\u201D]$/;
+
+      // If the user is NOT pressing punctuation, skip over any consecutive punctuation
+      // in the target sentence and auto-accept them.
+      if (!PUNCTUATION.test(e.key)) {
+        while (targetIndex < targetSentence.length && PUNCTUATION.test(targetSentence[targetIndex])) {
+          targetIndex++;
+          autoFillCount++;
+        }
+      }
+
+      // All remaining chars are punctuation — sentence is effectively complete
+      if (targetIndex >= targetSentence.length) {
+        setCursorIndex(targetSentence.length);
+        setHasError(false);
+        playKeypress();
         return;
       }
 
-      // Ignore double spaces completely
-      if (e.key === ' ' && typedChars.endsWith(' ')) {
-        return;
-      }
+      const expectedChar = targetSentence[targetIndex];
 
-      if (typedChars.length < targetSentence.length) {
-        let currentTargetIndex = typedChars.length;
-        let autoFilledPunctuation = '';
-        const PUNCTUATION = /[.,!?'"-\u2018\u2019\u201C\u201D]/; // includes smart quotes
-
-        // Auto-fill punctuation if the user types a letter or space
-        if (!PUNCTUATION.test(e.key)) {
-          while (currentTargetIndex < targetSentence.length && PUNCTUATION.test(targetSentence[currentTargetIndex])) {
-            autoFilledPunctuation += targetSentence[currentTargetIndex];
-            currentTargetIndex++;
-          }
-        }
-
-        if (currentTargetIndex >= targetSentence.length) {
-           setTypedChars((prev) => prev + autoFilledPunctuation);
-           playKeypress();
-           return;
-        }
-
-        const expectedChar = targetSentence[currentTargetIndex];
-        const isCorrect = e.key.toLowerCase() === expectedChar.toLowerCase();
-
-        if (isCorrect) {
-          setTypedChars((prev) => prev + autoFilledPunctuation + e.key);
+      // If there's an active error, ONLY allow the correct key to clear it.
+      // Block everything else (especially spacebar) to prevent side effects like pausing.
+      if (hasError) {
+        const isCorrectNow = e.key.toLowerCase() === expectedChar.toLowerCase();
+        if (isCorrectNow) {
+          setCursorIndex(targetIndex + 1);
+          setHasError(false);
           playKeypress();
         } else {
-          setTypedChars((prev) => prev + e.key);
-          setCurrentErrors((prev) => prev + 1);
-          setTotalMistakes((prev) => prev + 1);
           playError();
         }
+        return;
+      }
+
+      // Spacebar when a space is NOT expected → toggle pause (don't count as error)
+      if (e.key === ' ' && expectedChar !== ' ') {
+        e.preventDefault();
+        useGameStore.getState().togglePause();
+        return;
+      }
+
+      // Double-space guard
+      if (e.key === ' ' && targetIndex > 0 && targetSentence[targetIndex - 1] === ' ') {
+        return;
+      }
+
+      const isCorrect = e.key.toLowerCase() === expectedChar.toLowerCase();
+
+      if (isCorrect) {
+        // Auto-fill skipped punctuation + advance past the correct char
+        setCursorIndex(targetIndex + 1);
+        setHasError(false);
+        playKeypress();
+      } else {
+        // Wrong key: mark error on the current slot but DO NOT advance
+        setHasError(true);
+        setMistakesThisSentence((prev) => prev + 1);
+        playError();
       }
     }
-  }, [typedChars, currentErrors, targetSentence, triggerReplay, playKeypress, playError]);
+  }, [cursorIndex, hasError, targetSentence, triggerReplay, playKeypress, playError]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  const getCharState = (index: number): CharacterState => {
-    if (index >= typedChars.length) return 'pending';
-    const isErrorChar = index >= typedChars.length - currentErrors;
-    return isErrorChar ? 'error' : 'correct';
-  };
+  /**
+   * Returns the visual state for each character tile.
+   * - correct   → index < cursorIndex
+   * - error     → index === cursorIndex && hasError
+   * - pending   → everything else
+   */
+  const getCharState = useCallback((index: number): CharacterState => {
+    if (index < cursorIndex) return 'correct';
+    if (index === cursorIndex && hasError) return 'error';
+    return 'pending';
+  }, [cursorIndex, hasError]);
+
+  const isCompleted = cursorIndex >= targetSentence.length && !hasError;
 
   return {
-    typedChars,
-    cursorIndex: typedChars.length,
-    currentErrors,
-    totalMistakes,
+    cursorIndex,
+    hasError,
+    mistakesThisSentence,
     getCharState,
-    isCompleted: typedChars.length === targetSentence.length && currentErrors === 0,
+    isCompleted,
   };
 }

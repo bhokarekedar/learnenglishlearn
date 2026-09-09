@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { TypingArena } from "@/src/components/game/TypingArena";
 import { NativeVideoPlayer } from "@/src/components/game/NativeVideoPlayer";
 import { useGameStore, ClipConfig } from "@/src/store/useGameStore";
@@ -9,7 +9,7 @@ import clipsData from "@/src/data/clips.json";
 const clips: ClipConfig[] = clipsData as ClipConfig[];
 
 export default function Home() {
-  const { hasStarted, setHasStarted, currentClip, setCurrentClip, status, setStatus } = useGameStore();
+  const { hasStarted, setHasStarted, currentClip, setCurrentClip, status, setStatus, playbackRate, setPlaybackRate, togglePause, isPaused } = useGameStore();
   const [clipIndex, setClipIndex] = useState(0);
 
   const startGame = () => {
@@ -18,12 +18,60 @@ export default function Home() {
     setHasStarted(true);
   };
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     const nextIndex = (clipIndex + 1) % clips.length;
     setClipIndex(nextIndex);
     setCurrentClip(clips[nextIndex]);
     setStatus('idle');
-  };
+    // The video player resets isPaused internally when it detects a new clip ID.
+  }, [clipIndex, setCurrentClip, setStatus]);
+
+  const handlePrev = useCallback(() => {
+    const prevIndex = (clipIndex - 1 + clips.length) % clips.length;
+    setClipIndex(prevIndex);
+    setCurrentClip(clips[prevIndex]);
+    setStatus('idle');
+    // The video player resets isPaused internally when it detects a new clip ID.
+  }, [clipIndex, setCurrentClip, setStatus]);
+
+  // Handle global shortcuts
+  useEffect(() => {
+    if (!hasStarted) {
+      const handleStartKey = (e: KeyboardEvent) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          startGame();
+        }
+      };
+      window.addEventListener('keydown', handleStartKey);
+      return () => window.removeEventListener('keydown', handleStartKey);
+    }
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if (e.shiftKey) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          setPlaybackRate(Math.max(0.25, playbackRate - 0.25));
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          setPlaybackRate(Math.min(1.0, playbackRate + 0.25));
+        }
+      } else {
+        if (e.key === 'ArrowRight' && status === 'completed') {
+          e.preventDefault();
+          handleNext();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          handlePrev();
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [handleNext, handlePrev, playbackRate, setPlaybackRate, status, hasStarted]);
 
   // Auto-advance to next clip after a short delay
   useEffect(() => {
@@ -56,11 +104,28 @@ export default function Home() {
           <h1 className="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
             ClipType
           </h1>
-          <div className="flex gap-2 md:gap-4 hidden md:flex">
-            <div className="text-gray-500 font-mono text-sm border border-gray-800 rounded-md px-3 py-1">
+          <div className="flex gap-2 md:gap-4 hidden md:flex flex-wrap items-center">
+            {isPaused && (
+              <div className="text-rose-400 font-bold text-sm px-3 py-1 animate-pulse flex items-center gap-1">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                PAUSED
+              </div>
+            )}
+            {playbackRate !== 1.0 && (
+              <div className="text-cyan-400 font-bold text-sm px-3 py-1 border border-cyan-400/30 rounded-md bg-cyan-400/10">
+                {playbackRate}x Speed
+              </div>
+            )}
+            <div className="text-gray-500 font-mono text-xs border border-gray-800 rounded-md px-3 py-1">
+              Shift+↑/↓ Speed
+            </div>
+            <div className="text-gray-500 font-mono text-xs border border-gray-800 rounded-md px-3 py-1">
+              ←/→ Navigate
+            </div>
+            <div className="text-gray-500 font-mono text-xs border border-gray-800 rounded-md px-3 py-1">
               Esc to reset
             </div>
-            <div className="text-gray-500 font-mono text-sm border border-gray-800 rounded-md px-3 py-1">
+            <div className="text-gray-500 font-mono text-xs border border-gray-800 rounded-md px-3 py-1">
               Tab to replay
             </div>
           </div>

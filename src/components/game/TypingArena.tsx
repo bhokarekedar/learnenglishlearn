@@ -7,18 +7,18 @@ import { useGameStore } from "@/src/store/useGameStore";
 import { motion } from "framer-motion";
 
 export function TypingArena({ targetSentence }: { targetSentence: string }) {
-  const { cursorIndex, getCharState, isCompleted, totalMistakes, currentErrors } = useTypingEngine(targetSentence);
+  const { cursorIndex, getCharState, isCompleted, hasError } = useTypingEngine(targetSentence);
   const setStatus = useGameStore((state) => state.setStatus);
 
   useEffect(() => {
     if (isCompleted) {
       setStatus('completed');
-    } else if (cursorIndex > 0 || currentErrors > 0) {
+    } else if (cursorIndex > 0 || hasError) {
       setStatus('playing');
     } else {
       setStatus('idle');
     }
-  }, [isCompleted, cursorIndex, currentErrors, setStatus]);
+  }, [isCompleted, cursorIndex, hasError, setStatus]);
 
   return (
     <motion.div 
@@ -38,14 +38,19 @@ export function TypingArena({ targetSentence }: { targetSentence: string }) {
       </div>
       
       <div className="mt-8 flex justify-between items-center text-sm font-mono text-gray-500">
-        <div>Mistakes: <span className={totalMistakes > 0 ? "text-rose-400" : ""}>{totalMistakes}</span></div>
+        <div>
+          Mistakes: <span className={hasError ? "text-rose-400" : "text-gray-500"}>{hasError ? 1 : 0}</span>
+          {hasError && (
+            <span className="ml-3 text-rose-400 animate-pulse text-xs">← type correct key or Backspace</span>
+          )}
+        </div>
         {isCompleted && (
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="text-emerald-400 font-bold"
           >
-            Perfect! Press Esc to retry.
+            ✓ Done! Next clip in 1s…
           </motion.div>
         )}
       </div>
